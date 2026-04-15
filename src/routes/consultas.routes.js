@@ -3,7 +3,7 @@ import pool from "../config/db.js";
 
 const router = Router();
 
-router.get("/", async (req, res, next) => {
+async function listarConsultasCMB(req, res, next) {
   try {
     const result = await pool.query(`
       SELECT 
@@ -20,9 +20,9 @@ router.get("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
 
-router.get("/:id", async (req, res, next) => {
+async function buscarConsultaPorIdCMB(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -48,9 +48,9 @@ router.get("/:id", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
 
-router.post("/", async (req, res, next) => {
+async function criarConsultaCMB(req, res, next) {
   try {
     const { animal_id, data_consulta, motivo, diagnostico, veterinario } = req.body;
 
@@ -79,9 +79,9 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
 
-router.put("/:id", async (req, res, next) => {
+async function atualizarConsultaCMB(req, res, next) {
   try {
     const { id } = req.params;
     const { animal_id, data_consulta, motivo, diagnostico, veterinario } = req.body;
@@ -122,9 +122,9 @@ router.put("/:id", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
 
-router.delete("/:id", async (req, res, next) => {
+async function deletarConsultaCMB(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -140,9 +140,9 @@ router.delete("/:id", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
 
-router.get("/animais/:id/consultas", async (req, res, next) => {
+async function listarConsultasPorAnimalCMB(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -165,6 +165,14 @@ router.get("/animais/:id/consultas", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
+
+// ROTAS
+router.get("/", listarConsultasCMB);
+router.get("/:id", buscarConsultaPorIdCMB);
+router.post("/", criarConsultaCMB);
+router.put("/:id", atualizarConsultaCMB);
+router.delete("/:id", deletarConsultaCMB);
+router.get("/animais/:id/consultas", listarConsultasPorAnimalCMB);
 
 export default router;

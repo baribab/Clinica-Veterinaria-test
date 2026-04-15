@@ -3,18 +3,16 @@ import pool from "../config/db.js";
 
 const router = Router();
 
-// get de tutores
-router.get("/", async (req, res, next) => {
+async function listarTutoresCMB(req, res, next) {
   try {
     const result = await pool.query("SELECT * FROM tutores ORDER BY id ASC");
     res.status(200).json(result.rows);
   } catch (error) {
     next(error);
   }
-});
+}
 
-// get de tutores por id
-router.get("/:id", async (req, res, next) => {
+async function buscarTutorPorIdCMB(req, res, next) {
   try {
     const { id } = req.params;
 
@@ -28,10 +26,9 @@ router.get("/:id", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
 
-// post de tuturoes
-router.post("/", async (req, res, next) => {
+async function criarTutorCMB(req, res, next) {
   try {
     const { nome, telefone, email } = req.body;
 
@@ -54,6 +51,11 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
+
+// ROTAS
+router.get("/", listarTutoresCMB);
+router.get("/:id", buscarTutorPorIdCMB);
+router.post("/", criarTutorCMB);
 
 export default router;
